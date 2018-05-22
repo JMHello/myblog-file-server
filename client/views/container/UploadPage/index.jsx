@@ -7,7 +7,7 @@ import UploadBtn from '../../component/uploadBtn'
 import FolderSelect from '../../component/folderSelect'
 import {Upload, Modal} from 'antd'
 
-import {actions as FolderActions} from '../../redux/reducer/folderReducer'
+import {actions as FolderActions} from '../../../redux/reducer/folderReducer'
 
 import './style.css'
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ImgListItem from '../imgListItem'
+import ImgListItem from '../imgListItem/index'
 import './style.css'
 
 class ImgList extends Component {

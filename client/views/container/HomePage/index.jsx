@@ -5,8 +5,8 @@ import {connect} from 'react-redux'
 import SideBar from '../../component/sidebar'
 import FolderSelect from '../../component/folderSelect'
 import ImgList from '../../component/imgList'
-import {actions as ImgActions} from '../../redux/reducer/imgReducer'
-import {actions as FolderActions} from '../../redux/reducer/folderReducer'
+import {actions as ImgActions} from '../../../redux/reducer/imgReducer'
+import {actions as FolderActions} from '../../../redux/reducer/folderReducer'
 
 import './style.css'
 

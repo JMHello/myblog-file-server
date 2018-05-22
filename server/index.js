@@ -7,12 +7,12 @@ const mysql = require("mysql2/promise")
 const debug = require("debug")('app')
 const session = require("koa-session")
 const cors = require("koa-cors")
-const serverConfig = require("../config/server.dev.config")
+const serverConfig = require("../config")
 const routerMap = require("./router")
 
 const app = new Koa()
 
-global.db = mysql.createPool(serverConfig.db)
+global.db = mysql.createPool(serverConfig.dbConfig)
 
 // 在 X-Response-Time 的响应头返回响应时间
 app.use(async function responseTime (ctx, next) {
@@ -54,30 +54,6 @@ app.use(routerMap.routes())
   .use(routerMap.allowedMethods())
 
 
+app.listen(serverConfig.server.serverPort)
 
-//热更新
-if(process.env.NODE_EVN !== 'production'){
-  const Webpack = require('webpack');
-  const WebpackDevMiddleware = require('koa-webpack-dev-middleware');
-  // const WebpackHotMiddleware = require('webpack-hot-middleware');
-  const webpackConfig = require('../config/webpack.dev.config');
-
-  const compiler = Webpack(webpackConfig);
-
-  app.use(WebpackDevMiddleware(compiler, {
-    publicPath: '/',
-    stats: {colors: true},
-    lazy: false,
-    watchOptions: {
-      ignored: /node_modules/,
-      aggregateTimeout: 300,
-      poll: true
-    }
-  }));
-  // app.use(WebpackHotMiddleware(compiler));
-}
-
-
-app.listen(serverConfig.server.port)
-
-console.info(`${process.version} listening on port ${serverConfig.server.port} (${app.env}/${serverConfig.db.database})`)
+console.info(`${process.version} listening on port ${serverConfig.server.serverPort} (${app.env}/${serverConfig.dbConfig.database})`)

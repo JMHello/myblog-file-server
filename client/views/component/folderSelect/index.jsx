@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import FolderSelectItem from '../folderSelectItem'
+import FolderSelectItem from '../folderSelectItem/index'
 
 import './style.css'
 
