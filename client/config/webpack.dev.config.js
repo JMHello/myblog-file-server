@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const OpenBrowserWebpackPlugin  = require("open-browser-webpack-plugin")
 
 const config = require('./webpack.base.config')
 const port = require("../../config").server.clientPort
@@ -81,6 +82,12 @@ config.plugins.push(
 //     manifest: require('../../dist/lib/manifest.json')
 //   })
 // )
+
+config.plugins.push(
+  new OpenBrowserWebpackPlugin({
+    url: `http://127.0.0.1:${port}/#/admin/login`
+  })
+)
 
 config.plugins.push(
   new ProgressBarPlugin()

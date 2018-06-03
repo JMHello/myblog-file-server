@@ -1,22 +1,37 @@
 import React, {Component} from 'react'
-import ImgListItem from '../imgListItem/index'
+import {api} from '../../../fetch/fetch'
+import {WaterfallPics} from '../../../plugin/waterfallPics'
+
+
 import './style.css'
 
 class ImgList extends Component {
   constructor (props) {
     super(props)
   }
+  showImg (data) {
+    const imgWrapper = this.imgWrapper
+    WaterfallPics.init({
+      wrapper: imgWrapper,
+      data
+    })
+  }
   render () {
     const {data} = this.props
     return (
-      <div className="img-list-wrapper">
-        {
-          data.map((item, i) => {
-            return <ImgListItem idImg={item.idImg} ImgName={item.ImgName} ImgUrl={item.ImgUrl} key={i}/>
-          })
-        }
-      </div>
+      <div className="pics-waterfall" ref={ (ele) => this.imgWrapper = ele}></div>
     )
+  }
+  componentDidMount () {
+    const {data} = this.props
+    this.showImg(data)
+
+    WaterfallPics.init({
+      wrapper: this.imgWrapper
+    })
+  }
+  componentWillUnmount () {
+    this.imgWrapper = null
   }
 }
 

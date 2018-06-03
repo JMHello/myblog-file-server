@@ -4,9 +4,9 @@ class Img {
    * @param folderId
    * @return {Promise.<*>}
    */
-  static async getDataByFolderId (folderId) {
-    const sql = `SELECT * FROM img WHERE Folder_idFolder=?`
-    const [imgs] = await global.db.query(sql, [folderId])
+  static async getDataByFolderId (folderId, pageNum, pageSize) {
+    const sql = `SELECT * FROM img WHERE Folder_idFolder=? Limit ?,?`
+    const [imgs] = await global.db.query(sql, [folderId, (pageNum - 1) * pageSize, pageSize])
     return imgs
   }
 

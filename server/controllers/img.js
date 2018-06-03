@@ -10,7 +10,9 @@ class Img {
    */
   static async getImgs (ctx) {
     const idFolder = parseInt(ctx.params.idFolder)
-    const imgs = await imgModel.getDataByFolderId(idFolder)
+    const pageNum = parseInt(ctx.query.pageNum)
+    const pageSize = parseInt(ctx.query.pageSize)
+    const imgs = await imgModel.getDataByFolderId(idFolder, pageNum, pageSize)
     ctx.body = {
       status: 'success',
       data: imgs

@@ -99,10 +99,15 @@ function _getAddress() {
 async function getAddress (ctx) {
   const root = await _getAddress()
 
-  ctx.body = {
-    status: 'success',
-    data: root
-  }
+  ctx.response.set('Content-Type', 'application/x-javascript')
+
+    ctx.body = `jsonp(${
+    JSON.stringify({
+      status: 'success',
+      data: root
+      })
+    })`
+
 }
 
 module.exports = getAddress

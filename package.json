@@ -7,8 +7,8 @@
     "test": "cross-env NODE_ENV=test jest --forceExit --runInBand --watch",
     "coverage": "jest --coverage",
     "webpack": "webpack --config ./client/config/webpack.prod.config.js",
-    "dev": "node ./client/server/index.js",
-    "server": "nodemon ./server/index.js"
+    "dev": "cross-env NODE_ENV=development node ./client/server/index.js",
+    "server": "cross-env NODE_ENV=development nodemon ./server/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -84,6 +84,7 @@
     "koa-router": "^7.4.0",
     "koa-session": "^5.8.1",
     "koa-static": "^4.0.2",
+    "koa-static-cache": "^5.1.2",
     "mysql2": "^1.5.3",
     "path": "^0.12.7",
     "prop-types": "^15.6.1",

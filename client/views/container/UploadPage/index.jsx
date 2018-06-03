@@ -66,7 +66,7 @@ class UploadPage extends Component {
         </div>
         <div className="content-inner clearfix">
           <Upload
-            action={`/v1/img`}
+            action={`/api/img`}
             listType="picture-card"
             onPreview={this.handlePreview.bind(this)}
             onChange={this.handleChange.bind(this)}

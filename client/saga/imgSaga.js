@@ -1,5 +1,5 @@
 import {take, call, put} from 'redux-saga/effects'
-import {getRequest, postRequest, putRequest} from '../lib/fetch'
+import {getRequest, postRequest, putRequest, api} from '../fetch/fetch'
 import {actionTypes as IndexTypes} from '../redux/reducer'
 import {actionTypes as ImgTypes} from '../redux/reducer/imgReducer'
 
@@ -9,7 +9,7 @@ function* addImg (idFolder, imgfiles) {
   })
   
   try {
-      return yield call(postRequest, '/v1/img')
+      return yield call(postRequest, '/api/img')
   } catch (err) {
     // 报错处理
     yield put({
@@ -50,13 +50,13 @@ export function* addImgFlow () {
   }
 }
 
-function* getAllImgs (idFolder) {
+function* getAllImgs (idFolder, pageNum, pageSize) {
   yield put({
     type: IndexTypes.FETCH_START
   })
 
   try {
-    return yield call(getRequest, `/v1/${idFolder}/img`)
+    return yield call(getRequest, api.getImgsByFolderApi(idFolder, pageNum, pageSize))
   } catch (err) {
     // 报错处理
     yield put({
@@ -76,10 +76,9 @@ export function* getAllImgsFlow () {
   while (true) {
 
     let req = yield take(ImgTypes.GET_IMGS)
-    console.log(req)
 
     // 拿回来的响应
-    let res = yield call(getAllImgs, req.idFolder)
+    let res = yield call(getAllImgs, req.idFolder, req.pageNum, req.pageSize)
 
     // 判断返回的响应
     if (res.status === 'success') {

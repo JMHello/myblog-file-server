@@ -1,7 +1,7 @@
 const Koa = require("koa")
 const path = require("path")
 const compress = require("koa-compress")
-const static = require("koa-static")
+const static = require("koa-static-cache")
 const body = require("koa-body")
 const mysql = require("mysql2/promise")
 const debug = require("debug")('app')
@@ -43,9 +43,13 @@ app.use(async function (ctx, next) {
   await next()
 })
 
+
+
 app.use(static(path.resolve(__dirname, '../build')))
 app.use(static(path.resolve(__dirname, '../static')))
-app.use(static(path.resolve(__dirname, '../upload')))
+app.use(static(path.resolve(__dirname, '../upload'), {
+  maxAge: 60
+}))
 
 // 跨域
 app.use(cors({}))

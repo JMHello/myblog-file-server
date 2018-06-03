@@ -1,6 +1,7 @@
 const Router = require("koa-router")
 const imgCtrl = require("../controllers/img")
 
+
 const router = new Router()
 
 router.get('/:idFolder/img', imgCtrl.getImgs)

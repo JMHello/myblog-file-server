@@ -1,5 +1,23 @@
-.img-list-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+.pics-waterfall {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 179px);
+    overflow-y: auto;
 }
+.pics-waterfall .pic-item {
+    float: left;
+    text-align: center;
+    padding: 15px 0 0 10px;
+}
+.pics-waterfall .pic-info-wrapper {
+    padding: 10px;
+    border: 1px solid #c0c0c0;
+    box-shadow: inset 1px 1px rgba(0, 0, 0, 0.3);
+}
+.pics-waterfall img {
+    width: 170px;
+    height: auto;
+    display: block;
+    vertical-align: middle;
+}
+

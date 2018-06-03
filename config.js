@@ -2,7 +2,7 @@ module.exports = {
   publicPath: '/',
   server: {
     serverPort: '3002',
-    clientPort: '3003'
+    clientPort: '3004'
   },
   demoRootPath: 'http://garvenzhang.github.io/',
   auth: {
@@ -17,7 +17,7 @@ module.exports = {
     port: 3306,
     user: 'root',
     password: 'sz1997',
-    database: 'myblog'
+    database: 'imgmanagement'
   },
   corsHeader: {
     ACCESS_CONTROL_ALLOW_ORIGIN: '*',

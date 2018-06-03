@@ -9,10 +9,12 @@ export const actionTypes = {
 }
 
 export const actions = {
-  get_imgs: function (idFolder) {
+  get_imgs: function (idFolder, pageNum, pageSize) {
     return {
       type: actionTypes.GET_IMGS,
-      idFolder
+      idFolder,
+      pageNum,
+      pageSize
     }
   },
   del_imgs: function (idImg) {

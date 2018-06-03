@@ -1,5 +1,5 @@
 import {take, call, put} from 'redux-saga/effects'
-import {getRequest, postRequest, putRequest} from '../lib/fetch'
+import {getRequest, postRequest, putRequest, api} from '../fetch/fetch'
 import {actionTypes as IndexTypes} from '../redux/reducer'
 import {actionTypes as FolderTypes} from '../redux/reducer/folderReducer'
 
@@ -14,7 +14,7 @@ function* getAllFolders () {
   })
 
   try {
-    return yield call(getRequest, `/v1/folder`)
+    return yield call(getRequest, api.getFolderApi())
   } catch (err) {
     // 报错处理
     yield put({
