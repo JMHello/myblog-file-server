@@ -1,6 +1,8 @@
 const imgModel = require("../models/img")
 const fs = require("fs")
 const path = require("path")
+const {convertToWebp, modifyImgageName} = require("../tools/convertToWebp")
+const compressImgs = require("../tools/compressImgs")
 
 class Img {
   /**
@@ -26,14 +28,33 @@ class Img {
    */
   static async addImg (ctx) {
     const reqBody = ctx.request.body
-
     const fields = reqBody.fields
     const file= reqBody.files.file
-    const data = await dealWithImgData(fields, file)
+    const folderName = fields.FolderName
+    let data = await dealWithImgData(fields, file)
     const uploadUrl = path.resolve(__dirname,`../../upload${data.ImgUrl}`)
 
     // 读写文件
-    await uploadImg(uploadUrl, file)
+    await uploadImg(uploadUrl, file.path)
+
+    // 将jpg/png转化为webp
+    const isConverted = await convertToWebp(folderName, data.ImgName, data.ImgExt)
+
+
+    // 修改图片的名字
+    if (isConverted.status === 'failure') {
+      ctx.throw(isConverted.msg)
+    }
+
+    // 返回的是目标路径
+    const url = await modifyImgageName(isConverted.file.path, data.ImgExt)
+    // 除了png/jpg有新的目标路径外，像gif之类的就还是用回原来的路径即可
+    data.ImgUrl = url
+    
+
+    // 压缩图片
+    // await compressImgs(170, file.path, data.ImgExt)
+
 
     // 存储数据
     const id = await imgModel.addData(data)
@@ -97,8 +118,12 @@ function dealWithImgData (fields, file) {
  * @param url
  * @param file
  */
-function uploadImg (url, file) {
-  const reader = fs.createReadStream(file.path)
+async function uploadImg (url, path) {
+  const reader = fs.createReadStream(path)
   const writer = fs.createWriteStream(url)
   reader.pipe(writer)
 }
+
+
+
+

@@ -64,6 +64,7 @@
   "dependencies": {
     "antd": "^3.4.1",
     "axios": "^0.18.0",
+    "canvas": "^1.6.11",
     "ccap": "^0.6.10",
     "cross-env": "^5.1.4",
     "crypto": "^1.0.1",
@@ -72,6 +73,8 @@
     "fs": "0.0.1-security",
     "fs-extra": "^5.0.0",
     "https": "^1.0.0",
+    "imagemin": "^5.3.1",
+    "imagemin-webp": "^4.1.0",
     "js-cookie": "^2.2.0",
     "js-md5": "^0.7.3",
     "jsonwebtoken": "^8.2.1",

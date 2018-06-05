@@ -43,6 +43,13 @@ class HomePage extends Component {
     await this.getImgsData(e.target.value, 1, 15)
   }
 
+  /**
+   * 获取图片数据
+   * @param folderId
+   * @param pageNum
+   * @param pageSize
+   * @return {Promise.<void>}
+   */
   async getImgsData (folderId, pageNum, pageSize) {
 
     // 记录状态：加载中
@@ -55,8 +62,12 @@ class HomePage extends Component {
 
     // 响应
     if (result.status === 'success') {
-      let data = await Promise.all(this.loadImgs(result.data))
+      
+      const promises = await this.loadImgs(result.data)
+      console.log(promises)
 
+      let data = await Promise.all(promises)
+      console.log(data)
       // 如果返回来数据的长度小于pageSize，那么证明接下来的页数就没有数据，就不需要继续发送请求
       if (data.length < pageSize) {
         this.setState({
@@ -75,6 +86,7 @@ class HomePage extends Component {
       alert(result.msg)
     }
   }
+  
   handleOnScroll () {
     const self = this
      // 如果isLoadingMore为true，证明在加载数据中，所以直接return，不需要再发送请求
@@ -98,7 +110,7 @@ class HomePage extends Component {
    * @param data
    * @return {Array}
    */
-  loadImgs (data) {
+  async loadImgs (data) {
     let len = data.length
     let promises = []
     let imgs = []
@@ -107,15 +119,16 @@ class HomePage extends Component {
       promises[i] = new Promise((resolve, reject) => {
         imgs[i] = new Image()
 
-        imgs[i].onload = async function () {
+        imgs[i].onload = function () {
           // 按比例计算图片展示的高度，170是定义好的图片的宽度
           const height = Math.round(this.height * 170 / this.width)
-          data[i]['height'] = height
+          let d = data[i]
+          d['height'] = height
 
-          resolve(data[i])
+          resolve(d)
         }
-        imgs[i].onerror = function () {
-          reject(false)
+        imgs[i].onerror = function (err) {
+          reject(err.message)
         }
 
         imgs[i].src = api.getImgApi(data[i].ImgUrl)
@@ -124,9 +137,11 @@ class HomePage extends Component {
     
     return promises
   }
+  
   render () {
     const {folders} = this.props
     const {imgs} = this.state
+    
     return (
       <div className="wrapper img--management">
         <SideBar/>
@@ -173,7 +188,7 @@ class HomePage extends Component {
     this.props.get_folders()
 
     // 获取图片数据
-     this.getImgsData(1, this.state.pageNum, 15)
+     await this.getImgsData(1, this.state.pageNum, 15)
   }
 
   componentDidUpdate (prevProps, prevState) {

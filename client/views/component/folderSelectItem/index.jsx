@@ -9,7 +9,7 @@ class FolderSelectItem extends Component {
     render () {
         const {idFolder, FolderName} = this.props
         return (
-          <option className="select-item" value={idFolder}>{FolderName}</option>
+          <option className="select-item" value={`${idFolder}_${FolderName}`}>{FolderName}</option>
         )
     }
 }

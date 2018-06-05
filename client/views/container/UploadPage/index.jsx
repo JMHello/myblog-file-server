@@ -33,6 +33,8 @@ class UploadPage extends Component {
     })
   }
 
+
+
   handlePreview (file){
     this.setState({
       previewImage: file.url || file.thumbUrl,
@@ -45,10 +47,11 @@ class UploadPage extends Component {
     })
   }
   handleSelectChange (e) {
+    const value = e.target.value
     this.setState({
       folderData: {
-        Folder_idFolder: e.target.value,
-        FolderName: e.target.querySelector(`[value="${e.target.value}"]`).innerHTML
+        Folder_idFolder: parseInt(value.split('_')[0]),
+        FolderName: value.split('_')[1]
       }
     })
   }
