@@ -1,34 +1,62 @@
 import React, {Component} from 'react'
 import SideBar from '../../component/sidebar'
-import Table from '../../component/table'
+import { Modal, Button, Input } from 'antd';
+
 
 import './style.css'
-
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    id: `Edrward ${i}`,
-    folderName: `文件夹${i}`
-  });
-}
 
 class FolderPage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      data: data
+      data: [],
+      visible: false,
+      folderName: ''
     }
-  }
 
+    this.showModal = this.showModal.bind(this)
+    this.handleOk = this.handleOk.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
+    this.handleOnChange = this.handleOnChange.bind(this)
+  }
+  showModal () {
+    this.setState({
+      visible: true
+    })
+  }
+  handleOk (e) {
+    console.log(e)
+    this.setState({
+      visible: false
+    })
+  }
+  handleCancel (e) {
+    console.log(e)
+    this.setState({
+      visible: false
+    })
+  }
+  handleOnChange (e) {
+    this.setState({
+      foldName: e.target.value
+    })
+  }
   render () {
     return (
       <div className="wrapper img--management">
       <SideBar/>
       <div className="content">
         <h2 className="content-title">文件夹管理</h2>
-        <button type="button">添加文件夹</button>
+        <Button type="primary" onClick={this.showModal}>添加文件夹</Button>
         <div className="content-inner clearfix">
-          <Table dataSource={this.state.data} />
+          <Modal
+            title="创建文件夹"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+          >
+            <Input placeholder="文件夹名" onChange={this.handleOnChange}/>
+          </Modal>
         </div>
       </div>
       </div>

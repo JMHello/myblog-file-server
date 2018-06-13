@@ -10,6 +10,7 @@ async function convertToWebp (folderName, imgName, type, quanlity = 80) {
   switch (type) {
     case '.jpg':
       const JPEGImages = `upload/${folderName}/${imgName}.jpg`
+
       // jpg 转化为 webp
       promise = imagemin([JPEGImages], outpuFolder, {
         plugins: [
@@ -20,23 +21,15 @@ async function convertToWebp (folderName, imgName, type, quanlity = 80) {
       })
         .then(async (files) => {
           console.log(`${folderName}/${imgName}.jpg finished`)
-
-          return {
-            status: 'success',
-            file: files[0]
-          }
+          return files[0]
         })
         .catch((err) => {
-          console.log(err)
-
-          reject({
-            status: 'failure',
-            msg: err.message
-          })
+          return err
         })
       break;
     case '.png':
       const PNGImages = `upload/${folderName}/${imgName}.png`
+
       promise = imagemin([PNGImages], outpuFolder, {
         plugins: [
           imageminWebp({
@@ -46,19 +39,10 @@ async function convertToWebp (folderName, imgName, type, quanlity = 80) {
       })
         .then((files) => {
           console.log(`${folderName}/${imgName}.png finished`)
-
-          return {
-            status: 'success',
-            file: files[0]
-          }
+          return files[0]
         })
         .catch((err) => {
-          console.log(err)
-
-          reject({
-            status: 'failure',
-            msg: err.message
-          })
+          return err
         })
       break
   }
