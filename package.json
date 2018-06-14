@@ -72,7 +72,6 @@
   "dependencies": {
     "antd": "^3.4.1",
     "axios": "^0.18.0",
-    "canvas": "^1.6.11",
     "ccap": "^0.6.10",
     "cross-env": "^5.1.4",
     "crypto": "^1.0.1",
