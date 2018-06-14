@@ -16,7 +16,7 @@ module.exports = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'sz1997',
+    password: '970226',
     database: 'imgmanagement'
   },
   corsHeader: {
