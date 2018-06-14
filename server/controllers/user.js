@@ -39,7 +39,7 @@ class User {
     ctx.cookies.set('U_ID', id, {
       httpOnly: true,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 1000 // 1h
+      maxAge: 4 * 60 * 60 * 1000 // 4h
     })
 
     // 验证码判断
@@ -75,7 +75,7 @@ class User {
     ctx.cookies.set('USER_SIGN', crypt.encrypt(id), {
       httpOnly: true,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 1000 // 1h
+      maxAge: 4 * 60 * 60 * 1000 // 4h
     })
 
     // 添加 csrf token
@@ -83,7 +83,7 @@ class User {
     ctx.cookies.set('CSRF_TOKEN', csrfToken, {
       httpOnly: false,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 1000 // 1h
+      maxAge: 4 * 60 * 60 * 1000 // 4h
     })
 
     // 添加 access token
@@ -91,7 +91,7 @@ class User {
         id: id,
         name: name
       }, config.auth.CMS_ACCESS_TOKEN, {
-        expiresIn: '188h'
+        expiresIn: '4h'
       }
     )
 
@@ -101,7 +101,30 @@ class User {
     ctx.body = {
       status: 'success',
       accessToken: accessToken
-      // csrfToken: csrfToken
+    }
+  }
+
+  /**
+   * 注销
+   * @param ctx
+   * @return {Promise.<void>}
+   */
+  static async logout (ctx) {
+    // 删除相应的cookie
+    ctx.cookies.set('U_ID', '', {
+      maxAge: 0
+    })
+
+    ctx.cookies.set('USER_SIGN', '', {
+      maxAge: 0
+    })
+
+    ctx.cookies.set('CSRF_TOKEN', '', {
+      maxAge: 0
+    })
+
+    ctx.body = {
+      status: 'success'
     }
   }
 }

@@ -1,15 +1,17 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import ReactAddonsPureRenderMixin from 'react-addons-pure-render-mixin'
 
 import SideBar from '../../component/sidebar'
 import UploadBtn from '../../component/uploadBtn'
 import FolderSelect from '../../component/folderSelect'
 import {Upload, Modal} from 'antd'
+import Cookie from 'js-cookie'
+
+import home from '../HomePage/style.css'
 
 import {actions as FolderActions} from '../../../redux/reducer/folderReducer'
-
-import './style.css'
 
 const {get_folders} = FolderActions
 
@@ -21,69 +23,102 @@ class UploadPage extends Component {
       previewImage: '',
       fileList: [],
       folderData: {
-        Folder_idFolder: 1,
-        FolderName: 'progress'
+        Folder_id: -1,
+        name: ''
       }
     }
 
+    this.shouldComponentUpdate = ReactAddonsPureRenderMixin.shouldComponentUpdate
+
+    this.handlePreview = this.handlePreview.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
+    this.handleSelectChange = this.handleSelectChange.bind(this)
+    this.beforeUpload = this.beforeUpload.bind(this)
   }
+
   handleCancel () {
     this.setState({
       previewVisible: false
     })
   }
 
-
-
   handlePreview (file){
     this.setState({
       previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
-    });
+      previewVisible: true
+    })
   }
+
   handleChange ({ fileList }) {
     this.setState({
       fileList
     })
   }
-  handleSelectChange (e) {
+
+  async handleSelectChange (e) {
     const value = e.target.value
-    this.setState({
+
+    await this.setState({
       folderData: {
-        Folder_idFolder: parseInt(value.split('_')[0]),
-        FolderName: value.split('_')[1]
+        Folder_id: parseInt(value.split('_')[0]),
+        name: value.split('_')[1]
       }
     })
   }
+
+  setHenders () {
+    const accessToken = localStorage.getItem('ACCESS_TOKEN')
+    const csrfToken = Cookie.get('CSRF_TOKEN')
+    
+    return {
+      Authorization: `Bearer ${accessToken}`,
+      'x-csrf-token': csrfToken
+    }
+  }
+
+  // 上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。
+  beforeUpload (file, fileList) {
+    const {folderData} = this.state
+
+    if (folderData.Folder_id == -1) {
+      alert('请选择文件夹')
+
+      return false
+    }
+  }
+
   render () {
     const { previewVisible, previewImage, fileList, folderData} = this.state
     const {folders} = this.props
 
     return (
-      <div className="wrapper img--management">
-      <SideBar/>
-      <div className="content">
-        <h2 className="content-title">图片上传</h2>
-        <div className="select-wrapper">
-          文件夹：<FolderSelect data={folders} onChange={this.handleSelectChange.bind(this)}/>
+      <div className={home.wrapper}>
+        <SideBar/>
+        <div className={home.content}>
+          <h2 className={home['content-title']}>图片库</h2>
+          <div className={home['select-wrapper']}>
+            文件夹：<FolderSelect data={folders} onChange={this.handleSelectChange}/>
+          </div>
+          <div className="content-inner clearfix">
+            <Upload
+              action={`/api/img`}
+              listType="picture-card"
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+              multiple={true}
+              data={folderData}
+              headers={this.setHenders()}
+              beforeUpload={this.beforeUpload}
+            >
+              {fileList.length >= 10 ? null : <UploadBtn/>}
+            </Upload>
+            {/*预览图片*/}
+            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+              <img alt="example" style={{ width: '100%' }} src={previewImage} />
+            </Modal>
+          </div>
         </div>
-        <div className="content-inner clearfix">
-          <Upload
-            action={`/api/img`}
-            listType="picture-card"
-            onPreview={this.handlePreview.bind(this)}
-            onChange={this.handleChange.bind(this)}
-            multiple={true}
-            data={folderData}
-          >
-            {fileList.length >= 10 ? null : <UploadBtn/>}
-          </Upload>
-          {/*预览图片*/}
-          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel.bind(this)}>
-            <img alt="example" style={{ width: '100%' }} src={previewImage} />
-          </Modal>
-        </div>
-      </div>
       </div>
     )
   }

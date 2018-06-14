@@ -6,6 +6,7 @@ class Folder {
   static async getAllFolders () {
     const sql = `SELECT * FROM folder`
     const [folders] = await global.db.query(sql)
+
     return folders
   }
 
@@ -27,22 +28,29 @@ class Folder {
    * @return {Promise.<*>}
    */
   static async delById (idFolder) {
-    console.log(typeof idFolder)
     // 先查询文件夹里有没有图片
-    let sql = `SELECT idImg FROM img WHERE Folder_idFolder=?`
+    let sql = `SELECT id FROM img WHERE Folder_id=?`
     let [ids] = await global.db.query(sql, [idFolder])
 
     if (ids.length > 0) {
-      sql = `DELETE FROM img WHERE Folder_idFolder=?`
+      sql = `DELETE FROM img WHERE Folder_id=?`
       await global.db.query(sql, [idFolder])
     }
 
+    // 获取文件夹的名称
+    sql = `SELECT name FROM folder WHERE id=?`
+    const [nameArr] = await global.db.query(sql, [idFolder])
+
     // 再删除文件夹
-    sql = `DELETE FROM folder WHERE idFolder=?`
-    let result = await global.db.query(sql, [idFolder])
-    console.log(result)
-    
-    return result[0]
+    sql = `DELETE FROM folder WHERE id=?`
+    await global.db.query(sql, [idFolder])
+
+    const folders = await this.getAllFolders()
+
+    return {
+      folders: folders,
+      name: nameArr[0].name
+    }
   }
 
   /**
@@ -55,8 +63,14 @@ class Folder {
    */
   static async addData (folderDataObject) {
     const sql = `INSERT INTO folder SET ?`
-    const result = await global.db.query(sql, folderDataObject)
-    return result[0].insertId
+    const idResult = await global.db.query(sql, folderDataObject)
+
+    const result = await this.getAllFolders()
+
+    return {
+      id: idResult,
+      folders: result
+    }
   }
 }
 

@@ -5,7 +5,7 @@ const config = require("../../config")
 async function userAuth (ctx) {
   try {
     // referer验证
-    await _refererAuth(ctx)
+    // await _refererAuth(ctx)
 
     // csrf token验证
     await _csrfAuth(ctx)

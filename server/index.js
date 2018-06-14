@@ -31,7 +31,10 @@ app.keys = ['jmazm', 'myblog']
 // parse request body into ctx.request.body
 // - multipart allows parsing of enctype=multipart/form-data
 app.use(body({
-  multipart: true
+  multipart: true,
+  formidable: {
+    keepExtensions: true
+  }
 }))
 
 // 设置session(uses signed session cookies, with no server storage)
@@ -43,12 +46,27 @@ app.use(async function (ctx, next) {
   await next()
 })
 
+// 处理一些抛出错误的情况（这里主要是处理用户权限验证）
+app.use(async (ctx, next) => {
+  try {
+    await next()
+  } catch (err) {
+    const statusCode = err.status || err.statusCode || 500
+    const errMsg = err.message || 'Internal Server Error'
+    ctx.response.status = statusCode
+    ctx.body = {
+      status: 'failure',
+      message: errMsg
+    }
+  }
+})
 
 
-app.use(static(path.resolve(__dirname, '../build')))
-app.use(static(path.resolve(__dirname, '../static')))
+app.use(static(path.resolve(__dirname, '../dist'),  {
+  maxAge: 60 * 60 * 24 * 30 // 1month
+}))
 app.use(static(path.resolve(__dirname, '../upload'), {
-  maxAge: 60
+  maxAge: 60 * 60 * 24 * 60 // 2month
 }))
 
 // 跨域

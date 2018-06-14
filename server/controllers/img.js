@@ -10,11 +10,14 @@ class Img {
    * @param ctx
    * @return {Promise.<void>}
    */
-  static async getImgs (ctx) {
+  static async getImgs (ctx, next) {
+    await next()
+
     const idFolder = parseInt(ctx.params.idFolder)
     const pageNum = parseInt(ctx.query.pageNum)
     const pageSize = parseInt(ctx.query.pageSize)
     const imgs = await imgModel.getDataByFolderId(idFolder, pageNum, pageSize)
+
     ctx.body = {
       status: 'success',
       data: imgs
@@ -26,27 +29,26 @@ class Img {
    * @param ctx
    * @return {Promise.<void>}
    */
-  static async addImg (ctx) {
+  static async addImg (ctx, next) {
+    await next()
+
     const reqBody = ctx.request.body
     const fields = reqBody.fields
-    const folderName = fields.FolderName
+    const folderName = fields.name
     const file= reqBody.files.file
-    let data = await dealWithImgData(fields, file)
-    const uploadUrl = path.resolve(__dirname,`../../upload${data.ImgUrl}`)
+    const data = await dealWithImgData(fields, file)
+    const uploadUrl = path.resolve(__dirname,`../../upload${data.src}`)
 
     // 读写文件
     await uploadImg(file.path, uploadUrl)
 
     // 将jpg/png转化为webp
-    const convertResult = await convertToWebp(folderName, data.ImgName, data.ImgExt)
-
-    // 修改图片的名字
-    if (convertResult != null) {
-      // 返回的是目标路径
-      const url = await modifyImgageName(convertResult.path, data.ImgExt)
-      // 除了png/jpg有新的目标路径外，像gif之类的就还是用回原来的路径即可
-      data.ImgUrl = url
-    }
+    await convertToWebp({
+      folderName: folderName,
+      imageName: file.name,
+      src: file.path,
+      quantity: 80
+    })
 
     // 压缩图片
     // await compressImgs(170, file.path, data.ImgExt)
@@ -65,14 +67,18 @@ class Img {
     }
 
   }
-  static async modifyImg (ctx) {
+  static async modifyImg (ctx, next) {
+    await next()
+
     const param = ctx.request.body
     await imgModel.modifyNameById(param.ImgName, parseInt(param.idImg))
     ctx.body = {
       status: 'success'
     }
   }
-  static async delImg (ctx) {
+  static async delImg (ctx, next) {
+    await next()
+
     const id = parseInt(ctx.params.idImg)
     await imgModel.delById(id)
     ctx.body = {
@@ -97,13 +103,13 @@ function dealWithImgData (fields, file) {
   const data = {}
 
 // 图片路径
-  data.ImgUrl = `/${fields.FolderName}/${file.name}`
+  data.src = `/${fields.name}/${file.name}`
   // 所属文件夹id
-  data.Folder_idFolder = parseInt(fields.Folder_idFolder)
+  data.Folder_id = parseInt(fields.Folder_id)
   // 图片格式
-  data.ImgExt = `.${file.name.split('.')[1]}`
+  data.ext = `.${file.name.split('.')[1]}`
   // 图片名
-  data.ImgName = file.name.split('.')[0]
+  data.name = file.name.split('.')[0]
 
   return data
 }
@@ -115,10 +121,9 @@ function dealWithImgData (fields, file) {
  */
 
 async function uploadImg (oriUrl, desUrl) {
-  console.log(oriUrl, desUrl)
-  const reader = fs.createReadStream(oriUrl)
-  const writer = fs.createWriteStream(desUrl)
-  reader.pipe(writer)
+  const reader = await fs.createReadStream(oriUrl)
+  const writer = await fs.createWriteStream(desUrl)
+  await reader.pipe(writer)
 }
 
 

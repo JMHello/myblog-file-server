@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 
-import './style.css'
+import '../folderSelect/style.css'
 
 class FolderSelectItem extends Component {
     constructor (props) {
         super(props)
     }
     render () {
-        const {idFolder, FolderName} = this.props
+        const {id, name} = this.props
         return (
-          <option className="select-item" value={`${idFolder}_${FolderName}`}>{FolderName}</option>
+          <option className="select-item" value={`${id}_${name}`}>{name}</option>
         )
     }
 }

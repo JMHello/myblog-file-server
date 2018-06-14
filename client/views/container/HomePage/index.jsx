@@ -4,12 +4,14 @@ import {connect} from 'react-redux'
 import {WaterfallPics} from '../../../plugin/waterfallPics'
 import {api, getRequest} from '../../../fetch/fetch'
 import {throttle} from '../../../lib/timer'
+import ReactAddonsPureRenderMixin from 'react-addons-pure-render-mixin'
+import Cookie from 'js-cookie'
 
 import SideBar from '../../component/sidebar'
 import FolderSelect from '../../component/folderSelect'
 import {actions as FolderActions} from '../../../redux/reducer/folderReducer'
 
-import './style.css'
+import home from './style.css'
 
 const {get_folders} = FolderActions
 
@@ -17,13 +19,15 @@ class HomePage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      idFolder: 1, // 文件夹Id
+      id: 1, // 文件夹Id
       imgs: [], // 显示的所有图片
       pageImgs: [], // 存储每次请求回来的数据
       pageNum: 1, // 分页，请求的页数
       hasMore: true, // 是否有多的数据加载，默认为true
       isLoadingMore: false // 是否加载中，默认false
     }
+
+    this.shouldComponentUpdate = ReactAddonsPureRenderMixin.shouldComponentUpdate
 
     this.handleOnScroll = this.handleOnScroll.bind(this)
     this.onSelectChange = this.onSelectChange.bind(this)
@@ -33,14 +37,15 @@ class HomePage extends Component {
    * 文件夹选择
    */
   async onSelectChange (e) {
+    const id = e.target.value.split('_')[0]
     this.setState({
-      idFolder: e.target.value,
+      id: id,
       // 在改变文件夹的时候，图片的数据需要清空一次
       imgs: []
     })
 
     // 获取数据
-    await this.getImgsData(e.target.value, 1, 15)
+    await this.getImgsData(id, 1, 15)
   }
 
   /**
@@ -57,17 +62,24 @@ class HomePage extends Component {
       isLoadingMore: true
     })
 
+    const accessToken = localStorage.getItem('ACCESS_TOKEN')
+    const csrfToken = Cookie.get('CSRF_TOKEN')
+
     // ajax 请求
-    const result = await getRequest(api.getImgsByFolderApi(folderId, pageNum, pageSize))
+    const result = await getRequest(api.getImgsByFolderApi(folderId, pageNum, pageSize),  {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'x-csrf-token': csrfToken
+      }
+    })
 
     // 响应
     if (result.status === 'success') {
       
       const promises = await this.loadImgs(result.data)
-      console.log(promises)
 
       let data = await Promise.all(promises)
-      console.log(data)
+
       // 如果返回来数据的长度小于pageSize，那么证明接下来的页数就没有数据，就不需要继续发送请求
       if (data.length < pageSize) {
         this.setState({
@@ -76,14 +88,14 @@ class HomePage extends Component {
       }
 
       this.setState({
-        idFolder: folderId,
+        id: folderId,
         pageNum: pageNum,
         imgs: this.state.imgs.concat(data),
         isLoadingMore: false
       })
 
     } else {
-      alert(result.msg)
+      alert(result.message)
     }
   }
   
@@ -100,7 +112,7 @@ class HomePage extends Component {
        // 同时，需要判断每组图片的最后一张图片的相对高度
        // 两个条件同时成立，才能继续发送请求
        if (self.state.hasMore && WaterfallPics.checkIfAddImgs()) {
-         await self.getImgsData(self.state.idFolder, self.state.pageNum + 1, 15)
+         await self.getImgsData(self.state.id, self.state.pageNum + 1, 15)
        }
      }, 50)()
   }
@@ -131,7 +143,7 @@ class HomePage extends Component {
           reject(err.message)
         }
 
-        imgs[i].src = api.getImgApi(data[i].ImgUrl)
+        imgs[i].src = api.getImgApi(data[i].src)
       })
     }
     
@@ -139,29 +151,29 @@ class HomePage extends Component {
   }
   
   render () {
-    const {folders} = this.props
-    const {imgs} = this.state
+    const { folders } = this.props
+    const { imgs } = this.state
     
     return (
-      <div className="wrapper img--management">
+      <div className={home.wrapper}>
         <SideBar/>
-        <div className="content">
-          <h2 className="content-title">图片库</h2>
-          <div className="select-wrapper">
+        <div className={home.content}>
+          <h2 className={home['content-title']}>图片库</h2>
+          <div className={home['select-wrapper']}>
             文件夹：<FolderSelect data={folders} onChange={this.onSelectChange}/>
           </div>
           <div className="content-inner">
             <div className="img-wrapper">
-              <div className="pics-waterfall" onScroll={this.handleOnScroll} ref={ (ele) => this.imgWrapper = ele}>
+              <div className={home['pics-waterfall']} onScroll={this.handleOnScroll} ref={ (ele) => this.imgWrapper = ele}>
                 {
                   imgs.length > 0 ?
                     (
                       imgs.map((imgItem, i) => {
                         return (
-                          <div className="pic-item" key={i}>
-                            <div className="pic-info-wrapper">
-                              <img src={api.getImgApi(imgItem.ImgUrl)} style={{height: `${imgItem.height}px`}}/>
-                              <p className="pic-name">{imgItem.ImgName}</p>
+                          <div className={`${home['pic-item']} pic-item`} key={i}>
+                            <div className={home['pic-info-wrapper']}>
+                              <img className={home.img} src={api.getImgApi(imgItem.src)} style={{height: `${imgItem.height}px`}}/>
+                              <p className="pic-name">{imgItem.name}</p>
                             </div>
                           </div>
                         )
@@ -188,7 +200,7 @@ class HomePage extends Component {
     this.props.get_folders()
 
     // 获取图片数据
-     await this.getImgsData(1, this.state.pageNum, 15)
+    //  await this.getImgsData(1, this.state.pageNum, 15)
   }
 
   componentDidUpdate (prevProps, prevState) {

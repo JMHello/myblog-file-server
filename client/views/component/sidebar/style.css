@@ -5,13 +5,13 @@
     min-height: 650px;
     background: dodgerblue;
 }
-.aside .aside-nav-list .list-item{
-    margin-bottom: 15px;
-}
-.aside .aside-nav-list{
+.aside-nav-list{
    padding: 20px;
 }
-.aside .aside-nav-list a {
+.nav-list-item{
+    margin-bottom: 15px;
+}
+.nav-list-item a {
     color: white;
     font: 16px/2 '';
 }

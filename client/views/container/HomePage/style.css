@@ -2,15 +2,12 @@
     width: 100%;
     display: flex;
 }
-.img--management .content {
+.content {
     flex: 1;
     padding: 20px;
     background: white;
 }
-.img--managenent .content-inner {
-
-}
-.img--management .content-title {
+.content-title {
     font: bolder 24px/2 '';
     padding-bottom: 10px;
     border-bottom: 1px solid #c0c0c0;
@@ -22,20 +19,22 @@
     height: calc(100% - 179px);
     overflow-y: auto;
 }
-.pics-waterfall .pic-item {
+.pic-item {
     float: left;
     text-align: center;
     padding: 15px 0 0 10px;
 }
-.pics-waterfall .pic-info-wrapper {
+.pic-info-wrapper {
     padding: 10px;
     border: 1px solid #c0c0c0;
     box-shadow: inset 1px 1px rgba(0, 0, 0, 0.3);
 }
-.pics-waterfall img {
+.img {
     width: 170px;
     height: auto;
     display: block;
     vertical-align: middle;
 }
-
+.select-wrapper {
+    margin: 20px 0;
+}

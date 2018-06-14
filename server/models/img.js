@@ -5,7 +5,7 @@ class Img {
    * @return {Promise.<*>}
    */
   static async getDataByFolderId (folderId, pageNum, pageSize) {
-    const sql = `SELECT * FROM img WHERE Folder_idFolder=? Limit ?,?`
+    const sql = `SELECT * FROM img WHERE Folder_id=? Limit ?,?`
     const [imgs] = await global.db.query(sql, [folderId, (pageNum - 1) * pageSize, pageSize])
     return imgs
   }
@@ -17,7 +17,7 @@ class Img {
    * @return {Promise.<*>}
    */
   static async modifyNameById (ImgName, idImg) {
-    const sql = `UPDATE img SET ImgName=? WHERE idImg=?`
+    const sql = `UPDATE img SET name=? WHERE id=?`
     const result = await global.db.query(sql, [ImgName, idImg])
     return result
   }
@@ -28,7 +28,7 @@ class Img {
    * @return {Promise.<*>}
    */
   static async delById (idImg) {
-    const sql = `DELETE FROM img WHERE idImg=?`
+    const sql = `DELETE FROM img WHERE id=?`
     const result = await global.db.query(sql, [idImg])
     return result[0]
   }

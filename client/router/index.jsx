@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-// import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {HashRouter as Router, Route, Switch} from 'react-router-dom'
 
 import HomePage from '../views/container/HomePage'
@@ -16,8 +15,8 @@ class RouteMap extends Component {
       return (
         <Router>
           <Switch>
-            <Route exact  path="/login" component={LoginPage}/>
             <Route exact  path="/" component={HomePage}/>
+            <Route exact  path="/login" component={LoginPage}/>
             <Route exact  path="/upload" component={UploadPage}/>
             <Route exact  path="/folder" component={FolderPage}/>
           </Switch>

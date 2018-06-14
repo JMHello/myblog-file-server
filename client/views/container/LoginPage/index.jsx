@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import md5 from 'js-md5'
 
-import {getRequest, postRequest, api} from '../../../fetch/fetch'
+import {postRequest, api} from '../../../fetch/fetch'
 
-import './style.css'
+import login from './style.css'
 
 class Login extends Component {
   constructor (props) {
@@ -47,30 +47,30 @@ class Login extends Component {
   }
   render () {
     return (
-      <div className="login-wrapper">
-        <div className="login-header">
-          <h2 className="header-ti">张静宜文件管理cms登录</h2>
+      <div className={login.wrapper}>
+        <div className={login.header}>
+          <h2 className={login['header-ti']}>张静宜文件管理cms登录</h2>
         </div>
-        <form className="login-form" ref={ele => this.form = ele}>
-          <label htmlFor="username" className="form-label">
-            <input type="text" className="form-input" id="username" name="username" placeholder="用户名"/>
+        <form className={login['login-form']} ref={ele => this.form = ele}>
+          <label htmlFor="username" className={login['form-label']}>
+            <input type="text" className={login['form-input']} id="username" name="username" placeholder="用户名"/>
           </label>
-          <label htmlFor="password" className="form-label">
-            <input type="password" className="form-input" id="password" name="password" placeholder="密码"/>
+          <label htmlFor="password" className={login['form-label']}>
+            <input type="password" className={login['form-input']} id="password" name="password" placeholder="密码"/>
           </label>
           {
             this.state.loginTotal >= 3 ?
-              <div className="captcha-wrapper">
+              <div className={login['captcha-wrapper']}>
                 <img src={this.state.captUrl} alt="captcha" onClick={this.captClickHandler.bind(this)}/>
-                <label htmlFor="captcha" className="form-label">
-                  <input type="text" className="form-input" id="captcha" name="captcha" placeholder="验证码"/>
+                <label htmlFor="captcha"className={login['form-label']}>
+                  <input type="text" className={login['form-input']} id="captcha" name="captcha" placeholder="验证码"/>
                 </label>
               </div> :
               null
           }
 
-          <div className="login-tool-bar">
-            <button className="btn" type="button" onClick={this.loginHandle.bind(this)}>登录</button>
+          <div className={login['tool-bar']}>
+            <button className={login.btn} type="button" onClick={this.loginHandle.bind(this)}>登录</button>
           </div>
         </form>
       </div>

@@ -14,22 +14,23 @@ export const actions = {
       type: actionTypes.GET_FOLDERS,
     }
   },
-  del_folder: function (idImg) {
+  del_folder: function (id) {
     return {
       type: actionTypes.DEL_FOLDER,
-      idImg
+      id
     }
   },
-  add_folder: function () {
+  add_folder: function (name) {
     return {
-      type: actionTypes.ADD_FOLDER
+      type: actionTypes.ADD_FOLDER,
+      name
     }
   },
-  modify_folder: function (idImg, ImgName) {
+  modify_folder: function (id, name) {
     return {
       type: actionTypes.MODYFY_FOLDER,
-      idImg,
-      ImgName
+      id,
+      name
     }
   }
 }

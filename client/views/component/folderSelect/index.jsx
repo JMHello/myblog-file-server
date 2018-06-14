@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 
 import FolderSelectItem from '../folderSelectItem/index'
-
-import './style.css'
+import select from './style.css'
 
 class FolderSelect extends Component {
   constructor (props) {
@@ -12,13 +11,14 @@ class FolderSelect extends Component {
     const {data} = this.props
 
     return (
-      <select className="select" onChange={this.props.onChange.bind(this)}>
+      <select className={select.select} onChange={this.props.onChange.bind(this)}>
+        <FolderSelectItem id={-1} name={'请选择文件夹'}/>
         {
           data.length > 0 ?
             data.map((item, i) => {
-              return <FolderSelectItem idFolder={item.idFolder} FolderName={item.FolderName} key={i}/>
+              return <FolderSelectItem id={item.id} name={item.name} key={i}/>
             }) :
-            <FolderSelectItem idFolder={-1} FolderName={'暂无数据'}/>
+            <FolderSelectItem id={-1} name={'暂无数据'}/>
         }
       </select>
     )

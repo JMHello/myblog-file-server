@@ -25,6 +25,7 @@ axios.interceptors.response.use(function (res) {
 })
 
 export function getRequest (url, config) {
+
   return axios.get(url, Object.assign({}, defaultConfig, config))
 }
 
@@ -40,19 +41,16 @@ export function putRequest (url, data, config) {
   return axios.put(url, data, Object.assign({}, defaultConfig, config))
 }
 
-
 let domain = ''
-
-if (process.env.NODE_ENV !== 'development') {
-  domain = `http://127.0.0.1:${location.port}`
-}
 
 export const api = {
   getFolderApi: () => `${domain}/api/folder`,
+  delFolderApi: (id) => `${domain}/api/folder/${id}`,
+  addFolderApi: `${domain}/api/folder`,
+  modifyFolderApi: () => `${domain}/api/folder`,
   getImgsByFolderApi: (folderId, pageNum, pageSize) => `${domain}/api/${folderId}/img?pageNum=${pageNum}&pageSize=${pageSize}`,
   getImgApi: (childUrl) => `http://127.0.0.1:${commonConfig.server.serverPort}${childUrl}`,
   getCaptchaApi: `${domain}/api/captcha`,
   adminLoginApi: `${domain}/api/login`,
+  adminLogoutApi: `${domain}/api/logout`,
 }
-
-
