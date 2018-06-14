@@ -111,7 +111,8 @@ class UploadPage extends Component {
               headers={this.setHenders()}
               beforeUpload={this.beforeUpload}
             >
-              {fileList.length >= 10 ? null : <UploadBtn/>}
+              {/*{fileList.length >= 10 ? null : <UploadBtn/>}*/}
+              <UploadBtn/>
             </Upload>
             {/*预览图片*/}
             <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>

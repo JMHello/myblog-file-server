@@ -9,7 +9,8 @@ import {actions as folderActions} from '../../../redux/reducer/folderReducer'
 const { get_folders, add_folder, del_folder } = folderActions
 
 import SideBar from '../../component/sidebar'
-import { Modal, Button, Input, Table, Divider} from 'antd';
+import { Button, Input, Table, Divider} from 'antd';
+// import { Modal, Button, Input, Table, Divider} from 'antd';
 
 // import 'antd/lib/modal/style/index.css'
 
@@ -70,7 +71,7 @@ class FolderPage extends Component {
         <Divider type="vertical" />
         <a href="javascript:;" onClick={() => this.handleDel(row.id)}>删除</a>
         <Divider type="vertical" />
-        <a href="javascript:;" onClick={() => this.showModal(row.id)}>修改</a>
+        <a href="javascript:;">修改</a>
       </span>
     )
   }
@@ -98,10 +99,12 @@ class FolderPage extends Component {
     return data
   }
 
-  showModal () {
-    this.setState({
+  async showModal () {
+    await this.setState({
       visible: true
     })
+    
+    console.log(this.state.visible)
   }
 
   /**
@@ -117,7 +120,7 @@ class FolderPage extends Component {
       await this.props.add_folder(name)
 
       this.setState({
-        visible: false,
+        // visible: false,
         name: ''
       })
     }
@@ -147,6 +150,7 @@ class FolderPage extends Component {
 
   render () {
     const {folders} = this.props
+    const {visible} = this.state
 
     return (
       <div className={home.wrapper}>
@@ -154,17 +158,17 @@ class FolderPage extends Component {
         <div className={home.content}>
           <h2 className={home['content-title']}>文件夹管理</h2>
           <div className="content-inner">
-            <Button type="primary" onClick={this.showModal}>添加文件夹</Button>
             <div className="content-inner clearfix">
-              <Modal
-                title="创建文件夹"
-                visible={this.state.visible}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel}
-              >
-                <Input placeholder="文件夹名" onChange={this.handleOnChange}/>
-              </Modal>
-
+              {/*<Button type="primary" onClick={this.showModal}>添加文件夹</Button>*/}
+              {/*<Modal*/}
+                {/*title="创建文件夹"*/}
+                {/*visible={visible}*/}
+                {/*onOk={this.handleOk}*/}
+                {/*onCancel={this.handleCancel}*/}
+              {/*>*/}
+                {/*<Input placeholder="文件夹名" onChange={this.handleOnChange}/>*/}
+              {/*</Modal>*/}
+              <Input placeholder="文件夹名" onChange={this.handleOnChange}/> <Button type="primary" onClick={this.handleOk}>确认</Button><Button type="primary">清空</Button>
               <Table
                 dataSource={this.handleData(folders)}
                 columns={this.columns}

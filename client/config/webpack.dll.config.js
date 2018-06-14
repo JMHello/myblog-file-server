@@ -39,8 +39,12 @@ module.exports = {
       // 只处理大于这个字节的文件
       threshold: 10240,
       minRatio: 0.8
-    })
+    }),
 
+    // 定义环境
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
     // new HtmlWebpackPlugin({
     //   template: './client/views/index.html',
     //   inject: 'body',

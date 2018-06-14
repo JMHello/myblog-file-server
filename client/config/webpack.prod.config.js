@@ -6,7 +6,7 @@ const WebpackParallelUglifyPlugin = require("webpack-parallel-uglify-plugin")
 const CompressionWebpackPlugin = require("compression-webpack-plugin")
 const DllReferencePlugin = require("webpack/lib/DllReferencePlugin")
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin")
-const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin")
+// const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin")
 const HtmlWebpackIncludeAssestsPlugin = require("html-webpack-include-assets-plugin")
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const autoprefixer = require('autoprefixer')
@@ -22,7 +22,7 @@ const cssDir = 'client/views/'
 
 module.exports = merge(base, {
   mode: 'production',
-  devtool: 'source-map',
+  // devtool: 'source-map',
   entry: {
     index: ['./client/views/index.jsx']
   },

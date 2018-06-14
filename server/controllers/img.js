@@ -1,7 +1,7 @@
 const imgModel = require("../models/img")
 const fs = require("fs")
 const path = require("path")
-const {convertToWebp, modifyImgageName} = require("../tools/convertToWebp")
+const {convertToWebp} = require("../tools/convertToWebp")
 // const compressImgs = require("../tools/compressImgs")
 
 class Img {
@@ -36,19 +36,23 @@ class Img {
     const fields = reqBody.fields
     const folderName = fields.name
     const file= reqBody.files.file
-    const data = await dealWithImgData(fields, file)
+    let data = await dealWithImgData(fields, file)
     const uploadUrl = path.resolve(__dirname,`../../upload${data.src}`)
 
     // 读写文件
     await uploadImg(file.path, uploadUrl)
 
     // 将jpg/png转化为webp
-    await convertToWebp({
+    const webpFile = await convertToWebp({
       folderName: folderName,
       imageName: file.name,
       src: file.path,
       quantity: 80
     })
+
+    if (webpFile) {
+      data.src = `${data.src}.webp`
+    }
 
     // 压缩图片
     // await compressImgs(170, file.path, data.ImgExt)
