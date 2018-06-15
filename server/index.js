@@ -61,13 +61,14 @@ app.use(async (ctx, next) => {
   }
 })
 
-
 app.use(static(path.resolve(__dirname, '../dist'),  {
   maxAge: 60 * 60 * 24 * 30 // 1month
 }))
 app.use(static(path.resolve(__dirname, '../upload'), {
   maxAge: 60 * 60 * 24 * 60 // 2month
 }))
+
+
 
 // 跨域
 app.use(cors({}))

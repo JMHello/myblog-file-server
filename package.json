@@ -79,7 +79,7 @@
     "fs": "0.0.1-security",
     "https": "^1.0.0",
     "imagemin-webp": "^4.1.0",
-    "jmazm-imagemin": "^5.3.1",
+    "jmazm-imagemin": "^1.0.0",
     "js-cookie": "^2.2.0",
     "js-md5": "^0.7.3",
     "jsonwebtoken": "^8.2.1",

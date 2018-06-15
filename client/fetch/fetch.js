@@ -42,14 +42,19 @@ export function putRequest (url, data, config) {
 }
 
 let domain = ''
+let imgDomin = ''
+
+if (process.env.NODE_ENV == 'development') {
+  imgDomin = `http://127.0.0.1:${commonConfig.server.serverPort}`
+}
 
 export const api = {
   getFolderApi: () => `${domain}/api/folder`,
   delFolderApi: (id) => `${domain}/api/folder/${id}`,
   addFolderApi: `${domain}/api/folder`,
   modifyFolderApi: () => `${domain}/api/folder`,
-  getImgsByFolderApi: (folderId, pageNum, pageSize) => `${domain}/api/${folderId}/img?pageNum=${pageNum}&pageSize=${pageSize}`,
-  getImgApi: (childUrl) => `http://127.0.0.1:${commonConfig.server.serverPort}${childUrl}`,
+  getImgsByFolderApi: (folderId, pageNum, pageSize) => `/api/${folderId}/img?pageNum=${pageNum}&pageSize=${pageSize}`,
+  getImgApi: (childUrl) => `${imgDomin}${childUrl}`,
   getCaptchaApi: `${domain}/api/captcha`,
   adminLoginApi: `${domain}/api/login`,
   adminLogoutApi: `${domain}/api/logout`,

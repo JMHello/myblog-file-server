@@ -12,6 +12,8 @@ function* getAllFolders () {
   try {
     const accessToken = localStorage.getItem('ACCESS_TOKEN')
     const csrfToken = Cookie.get('CSRF_TOKEN')
+    
+    console.log(api.getFolderApi())
 
     return yield call(getRequest, api.getFolderApi(), {
       headers: {

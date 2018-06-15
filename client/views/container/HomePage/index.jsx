@@ -77,8 +77,22 @@ class HomePage extends Component {
     if (result.status === 'success') {
       
       const promises = await this.loadImgs(result.data)
+      let data = []
 
-      let data = await Promise.all(promises)
+      /**
+       * Promise.all(Array|String)：只返回一个Promise，that resolves when all of the promises in the iterable argument have resolved or when the iterable argument contains no promises. It rejects with the reason of the first promise that rejects.
+       */
+      // let data = await Promise.all(promises)
+
+      // 这里不能直接用Promise.all去处理，因为它要么只返回resolve要么就只返回reject
+      // 所以这里要结合promise的语法以及async/await，获取最终的数据
+      for (let promise of promises) {
+        await promise.then((img) => {
+          data.push(img)
+        }).catch((img) => {
+          data.push(img)
+        })
+      }
 
       // 如果返回来数据的长度小于pageSize，那么证明接下来的页数就没有数据，就不需要继续发送请求
       if (data.length < pageSize) {
@@ -139,8 +153,9 @@ class HomePage extends Component {
 
           resolve(d)
         }
+        // 如果读取不到这张图片，也返回这张图片
         imgs[i].onerror = function (err) {
-          reject(err.message)
+          reject(data[i])
         }
 
         imgs[i].src = api.getImgApi(data[i].src)
