@@ -10,14 +10,12 @@ const path = require("path")
 const router = new Router()
 
 router.get(/^\/$/, async (ctx) => {
-  console.log(process.cwd(), path.resolve(process.cwd(), 'dist/index.html'))
   const url = path.resolve(process.cwd(), 'dist/index.html')
   const data = await fs.readFileSync(url, 'utf8')
   ctx.set('Content-Type', 'text/html')
   ctx.body = data
 })
 
-console.log(process.cwd())
 
 router.use('/api',img.routes(), img.allowedMethods())
 router.use('/api',folder.routes(), folder.allowedMethods())

@@ -9,10 +9,10 @@ import {actions as folderActions} from '../../../redux/reducer/folderReducer'
 const { get_folders, add_folder, del_folder } = folderActions
 
 import SideBar from '../../component/sidebar'
-import { Button, Input, Table, Divider} from 'antd';
+// import { Button, Input, Table, Divider} from 'antd';
 // import { Modal, Button, Input, Table, Divider} from 'antd';
-
-// import 'antd/lib/modal/style/index.css'
+import Table from '../../../plugin/table'
+import Modal from '../../../plugin/modal'
 
 import home from '../HomePage/style.css'
 
@@ -32,6 +32,7 @@ class FolderPage extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleOnChange = this.handleOnChange.bind(this)
     this.handleDel = this.handleDel.bind(this)
+    this.renderInput = this.renderInput.bind(this)
   }
   /**
    * 表格头部数据
@@ -64,13 +65,11 @@ class FolderPage extends Component {
    * @param index
    * @return {XML}
    */
-  handleRenderOperation (o, row) {
+  handleRenderOperation (row) {
     return (
       <span>
         <a href="javascript:;">查看</a>
-        <Divider type="vertical" />
         <a href="javascript:;" onClick={() => this.handleDel(row.id)}>删除</a>
-        <Divider type="vertical" />
         <a href="javascript:;">修改</a>
       </span>
     )
@@ -103,8 +102,6 @@ class FolderPage extends Component {
     await this.setState({
       visible: true
     })
-    
-    console.log(this.state.visible)
   }
 
   /**
@@ -120,7 +117,7 @@ class FolderPage extends Component {
       await this.props.add_folder(name)
 
       this.setState({
-        // visible: false,
+        visible: false,
         name: ''
       })
     }
@@ -148,31 +145,36 @@ class FolderPage extends Component {
     })
   }
 
+  renderInput () {
+    return (
+      <input placeholder="文件夹名" onChange={this.handleOnChange}/>
+    )
+  }
+
   render () {
     const {folders} = this.props
     const {visible} = this.state
 
     return (
-      <div className={home.wrapper}>
+      <div className={ home.wrapper }>
         <SideBar/>
-        <div className={home.content}>
-          <h2 className={home['content-title']}>文件夹管理</h2>
+        <div className={ home.content }>
+          <h2 className= {home['content-title'] }>文件夹管理</h2>
           <div className="content-inner">
             <div className="content-inner clearfix">
-              {/*<Button type="primary" onClick={this.showModal}>添加文件夹</Button>*/}
-              {/*<Modal*/}
-                {/*title="创建文件夹"*/}
-                {/*visible={visible}*/}
-                {/*onOk={this.handleOk}*/}
-                {/*onCancel={this.handleCancel}*/}
-              {/*>*/}
-                {/*<Input placeholder="文件夹名" onChange={this.handleOnChange}/>*/}
-              {/*</Modal>*/}
-              <Input placeholder="文件夹名" onChange={this.handleOnChange}/> <Button type="primary" onClick={this.handleOk}>确认</Button><Button type="primary">清空</Button>
+              <button type="primary" onClick={ this.showModal }>添加文件夹</button>
+              <Modal
+                title="创建文件夹"
+                visible={ visible }
+                onOk={ this.handleOk }
+                onCancel={ this.handleCancel }
+                content={ this.renderInput() }
+              >
+              </Modal>
               <Table
-                dataSource={this.handleData(folders)}
-                columns={this.columns}
-                pagination={false}
+                dataSource={ this.handleData(folders) }
+                columns={ this.columns }
+                pagination={ false }
               />
           </div>
         </div>

@@ -15,8 +15,8 @@ class RouteMap extends Component {
       return (
         <Router>
           <Switch>
-            <Route exact  path="/" component={HomePage}/>
-            <Route exact  path="/login" component={LoginPage}/>
+            <Route exact  path="/" component={LoginPage}/>
+            <Route exact  path="/image" component={HomePage}/>
             <Route exact  path="/upload" component={UploadPage}/>
             <Route exact  path="/folder" component={FolderPage}/>
           </Switch>

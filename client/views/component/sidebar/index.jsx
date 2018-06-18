@@ -14,7 +14,7 @@ class SideBar extends Component {
     if (result.status == 'success') {
       localStorage.removeItem('ACCESS_TOKEN')
 
-      location.href = '/#/login'
+      location.href = '/'
     }
   }
 
@@ -23,7 +23,7 @@ class SideBar extends Component {
           <aside className={sideBar.aside}>
             <nav className="aside-nav">
               <ul className={sideBar['aside-nav-list']}>
-                <li className={sideBar['nav-list-item']}><Link to="/">查看图片</Link></li>
+                <li className={sideBar['nav-list-item']}><Link to="/image">查看图片</Link></li>
                 <li className={sideBar['nav-list-item']}><Link to="/upload">上传图片</Link></li>
                 <li className={sideBar['nav-list-item']}><Link to="/folder">文件夹管理</Link></li>
                 <li className={sideBar['nav-list-item']}><a href="javascript:;" onClick={this.handleLogout}>退出登录</a></li>

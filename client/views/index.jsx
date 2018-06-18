@@ -1,13 +1,12 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import { AppContainer } from 'react-hot-loader'
 
 import RouterMap from '../router'
 import configureStore from '../redux/store'
 
 import './reset.css'
-// import 'antd/dist/antd.css'
 
 function renderRoot () {
   ReactDOM.render(

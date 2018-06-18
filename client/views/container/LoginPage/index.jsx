@@ -31,7 +31,7 @@ class Login extends Component {
     if (result.status === 'success') {
       const accessToken = result.accessToken
       localStorage.setItem('ACCESS_TOKEN', accessToken)
-      location.href = '/'
+      location.href = '/#/image'
     } else {
       alert(result.msg)
       // 获取登录的次数
