@@ -131,9 +131,7 @@ async function uploadImg (oriUrl, desUrl) {
 }
 
 
-async function readFile (oriUrl) {
 
-}
 
 
 

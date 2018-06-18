@@ -47,7 +47,9 @@ class Folder {
     }
 
   }
-  static async modifyFolder (ctx) {
+  static async modifyFolder (ctx, next) {
+    await next()
+
     const param = ctx.request.body
     await folderModel.modifyNameById(param.FolderName, parseInt(param.idFolder))
     ctx.body = {
