@@ -75,9 +75,6 @@ app.use(static(path.resolve(rootDir, 'upload'), {
   maxAge: 60 * 60 * 24 * 60 // 2month
 }))
 
-
-
-// 跨域
 app.use(cors({}))
 
 // 防止点击劫持
