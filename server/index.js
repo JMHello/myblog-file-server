@@ -6,13 +6,19 @@ const body = require("koa-body")
 const mysql = require("mysql2/promise")
 const debug = require("debug")('app')
 const session = require("koa-session")
+const validate = require("koa-validate")
 const cors = require("koa-cors")
 const serverConfig = require("../config")
 const routerMap = require("./router")
+const rootDir = process.cwd()
 
 const app = new Koa()
 
+// 将myql连接池暴露在全局环境下
 global.db = mysql.createPool(serverConfig.dbConfig)
+
+// 拦截器 - validate url params, url queries, request bodies, headers as well as files
+validate(app)
 
 // 在 X-Response-Time 的响应头返回响应时间
 app.use(async function responseTime (ctx, next) {
@@ -61,10 +67,11 @@ app.use(async (ctx, next) => {
   }
 })
 
-app.use(static(path.resolve(__dirname, '../dist'),  {
+app.use(static(path.resolve(rootDir, 'dist'),  {
   maxAge: 60 * 60 * 24 * 30 // 1month
 }))
-app.use(static(path.resolve(__dirname, '../upload'), {
+
+app.use(static(path.resolve(rootDir, 'upload'), {
   maxAge: 60 * 60 * 24 * 60 // 2month
 }))
 
@@ -73,9 +80,16 @@ app.use(static(path.resolve(__dirname, '../upload'), {
 // 跨域
 app.use(cors({}))
 
+// 防止点击劫持
+app.use(async function (ctx, next) {
+  ctx.set('X-XSS-Protection', '1; mode=block')
+  ctx.set('X-Frame-Options', 'DENY')
+
+  await next()
+})
+
 app.use(routerMap.routes())
   .use(routerMap.allowedMethods())
-
 
 app.listen(serverConfig.server.serverPort)
 
