@@ -37,7 +37,7 @@ export function* getAllImgsFlow () {
       })
     } else {
       alert(res.message)
-      // location.href = '/#/login'
+      location.href = '/'
     }
   }
 }

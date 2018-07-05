@@ -2,6 +2,8 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const merge = require("webpack-merge")
+const CleanWebpackPlugin = require("clean-webpack-plugin")
+const path = require("path")
 
 const base = require('./webpack.base.config')
 const config = require("../../config")
@@ -29,14 +31,6 @@ module.exports = merge(base, {
       './client/views/index.jsx'
     ],
   },
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.css$/,
-  //       use: ['style-loader', 'css-loader']
-  //     }
-  //   ]
-  // },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
@@ -51,6 +45,12 @@ module.exports = merge(base, {
         collapseWhitespace: true
       },
       filename: 'index.html'
+    }),
+    // 清除
+    new CleanWebpackPlugin(['dist'],  {
+      root: path.resolve(process.cwd(), './'),
+      verbose: true,
+      dry: false
     }),
     new webpack.HotModuleReplacementPlugin(),
     // 当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。

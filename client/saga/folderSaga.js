@@ -43,7 +43,7 @@ export function* getAllFolderFlow () {
       })
     } else {
       alert(res.message)
-      location.href = '/#/login'
+      location.href = '/'
     }
   }
 }
@@ -90,7 +90,7 @@ export function* addFolderFlow () {
       alert('添加文件夹成功！')
     } else {
       alert(res.message)
-      location.href = '/#/login'
+      location.href = '/'
     }
   }
 }
@@ -136,7 +136,7 @@ export function* delFolderFlow () {
       alert('删除文件夹成功！')
     } else {
       alert(res.message)
-      location.href = '/#/login'
+      location.href = '/'
     }
   }
 }

@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HardSourceWebpackPlugin  = require("hard-source-webpack-plugin")
 const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin")
 const autoprefixer = require('autoprefixer')

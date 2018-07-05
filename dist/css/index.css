@@ -404,14 +404,11 @@ mark {
 }
 .clearfix:before,
 .clearfix:after {
-  content: " ";
+  content: "";
   display: table;
 }
 .clearfix:after {
   clear: both;
-  visibility: hidden;
-  font-size: 0;
-  height: 0;
 }
 @font-face {
   font-family: 'anticon';
@@ -2353,7 +2350,7 @@ mark {
 .ant-modal-open {
   overflow: hidden;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .ant-modal {
     width: auto !important;
     margin: 10px;
@@ -2377,14 +2374,11 @@ mark {
 }
 .ant-confirm-body-wrapper:before,
 .ant-confirm-body-wrapper:after {
-  content: " ";
+  content: "";
   display: table;
 }
 .ant-confirm-body-wrapper:after {
   clear: both;
-  visibility: hidden;
-  font-size: 0;
-  height: 0;
 }
 .ant-confirm-body .ant-confirm-title {
   color: rgba(0, 0, 0, 0.85);
@@ -3134,11 +3128,12 @@ mark {
 .ant-btn + .ant-btn-group,
 .ant-btn-group span + .ant-btn,
 .ant-btn-group .ant-btn + span,
+.ant-btn-group > span + span,
 .ant-btn-group + .ant-btn,
 .ant-btn-group + .ant-btn-group {
   margin-left: -1px;
 }
-.ant-btn-group .ant-btn-primary + .ant-btn:not(.ant-btn-primary) {
+.ant-btn-group .ant-btn-primary + .ant-btn:not(.ant-btn-primary):not([disabled]) {
   border-left-color: transparent;
 }
 .ant-btn-group .ant-btn:not(:first-child):not(:last-child) {
@@ -3558,14 +3553,11 @@ a.ant-btn-sm {
 }
 .ant-upload-list:before,
 .ant-upload-list:after {
-  content: " ";
+  content: "";
   display: table;
 }
 .ant-upload-list:after {
   clear: both;
-  visibility: hidden;
-  font-size: 0;
-  height: 0;
 }
 .ant-upload-list-item {
   margin-top: 8px;
@@ -4048,6 +4040,7 @@ a.ant-btn-sm {
   z-index: 1060;
   display: block;
   visibility: visible;
+  max-width: 250px;
 }
 .ant-tooltip-hidden {
   display: none;
@@ -4073,7 +4066,6 @@ a.ant-btn-sm {
   padding-right: 8px;
 }
 .ant-tooltip-inner {
-  max-width: 250px;
   padding: 6px 8px;
   color: #fff;
   text-align: left;
