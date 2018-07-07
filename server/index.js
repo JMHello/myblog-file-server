@@ -1,7 +1,7 @@
 const Koa = require("koa")
 const path = require("path")
 const compress = require("koa-compress")
-const static = require("koa-static-cache")
+const static = require("jmazm-koa-static-cache")
 const body = require("koa-body")
 const mysql = require("mysql2/promise")
 const debug = require("debug")('app')
@@ -84,6 +84,7 @@ app.use(async function (ctx, next) {
 
   await next()
 })
+
 
 app.use(routerMap.routes())
   .use(routerMap.allowedMethods())
