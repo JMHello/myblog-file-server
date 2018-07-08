@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pm2": "cross-env NODE_ENV=production pm2 start ./server/index.js --name blogfile --watch",
+    "pm2-c": "cross-env NODE_ENV=production pm2 start ./server/index.js --name blogfile --watch",
+    "pm2": "cross-env NODE_ENV=production pm2 start ./ecosystem.config.js",
     "server": "cross-env NODE_ENV=production node ./server/index.js",
     "restart": "cross-env NODE_ENV=production pm2 restart blogfile --watch"
   },
