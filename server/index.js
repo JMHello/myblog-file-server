@@ -80,7 +80,14 @@ app.use(cors({}))
 // 防止点击劫持
 app.use(async function (ctx, next) {
   ctx.set('X-XSS-Protection', '1; mode=block')
-  ctx.set('X-Frame-Options', 'DENY')
+
+  const frame =
+    process.env.NODE_ENV == 'development' ?
+        serverConfig.blogServer.dev:
+        serverConfig.blogServer.prod
+
+  ctx.set('X-Frame-Options', `ALLOW-FROM ${frame}`)
+  // ctx.set('X-Frame-Options', `SAMEORIGIN`)
 
   await next()
 })

@@ -17,6 +17,7 @@ router.get(/^\/$/, async (ctx) => {
 })
 
 
+
 router.use('/api',img.routes(), img.allowedMethods())
 router.use('/api',folder.routes(), folder.allowedMethods())
 router.use('/api',address.routes(), address.allowedMethods())

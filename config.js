@@ -4,6 +4,10 @@ module.exports = {
     serverPort: '3002',
     clientPort: '3004'
   },
+  blogServer: {
+    dev: 'http://localhost:8080',
+    prod: 'https://blog.jmazm.com'
+  },
   demoRootPath: 'http://garvenzhang.github.io/',
   auth: {
     key: './server/auth/2_www.hellojm.cn.key',
